@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحدي سرعة البديهة</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to right, red 50%, blue 50%);
+      transition: background 0.5s;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0 50px;
+      pointer-events: none;
+    }
+    .btn-wrap{
+      pointer-events: auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    button {
+      font-size: 2rem;
+      padding: 30px 60px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+    button:hover{ transform: translateY(-4px); box-shadow: 0 26px 50px rgba(0,0,0,0.28); }
+    button:active{ transform: translateY(-2px) scale(.99); }
+    #redBtn { background-color: #e53935; }
+    #blueBtn { background-color: #1e88e5; }
+    #restartBtn {
+      display: none;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 20px 40px;
+      font-size: 1.5rem;
+      background-color: gray;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.24);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="btn-wrap"><button id="redBtn">RED</button></div>
+    <div class="btn-wrap"><button id="blueBtn">BLUE</button></div>
+  </div>
+  <button id="restartBtn">Restart</button>
+  <audio id="bellSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5a8f2a9b91.mp3?filename=metallic-bell-ting-1-18015.mp3" preload="auto"></audio>
+
+  <script>
+    const redBtn = document.getElementById('redBtn');
+    const blueBtn = document.getElementById('blueBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const bellSound = document.getElementById('bellSound');
+    let clicked = false;
+
+    function playBell(){
+      try {
+        bellSound.currentTime = 0;
+        bellSound.play();
+      } catch(e) {}
+    }
+
+    function endRound(color) {
+      if (clicked) return;
+      clicked = true;
+      playBell();
+      document.body.style.background = color;
+      restartBtn.style.display = 'block';
+      redBtn.disabled = true;
+      blueBtn.disabled = true;
+      redBtn.style.filter = 'brightness(.9)';
+      blueBtn.style.filter = 'brightness(.9)';
+    }
+
+    redBtn.onclick = () => endRound('red');
+    blueBtn.onclick = () => endRound('blue');
+
+    restartBtn.onclick = () => {
+      document.body.style.background = 'linear-gradient(to right, red 50%, blue 50%)';
+      restartBtn.style.display = 'none';
+      clicked = false;
+      redBtn.disabled = false;
+      blueBtn.disabled = false;
+      redBtn.style.filter = '';
+      blueBtn.style.filter = '';
+    };
+  </script>
+</body>
+</html>
